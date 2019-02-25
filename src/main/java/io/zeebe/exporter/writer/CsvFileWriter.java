@@ -21,11 +21,12 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import io.zeebe.exporter.record.CsvRecord;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 public class CsvFileWriter implements CsvWriter {
 
@@ -47,8 +48,11 @@ public class CsvFileWriter implements CsvWriter {
   public void write(CsvRecord record) throws IOException {
     if (sequenceWriter == null) {
       Path path = filePath(output, prefix, record.getPartition());
-      File file = Files.createFile(path).toFile();
-      sequenceWriter = objectWriter.writeValues(new BufferedWriter(new FileWriter(file)));
+      OpenOption openOption =
+          Files.exists(path) ? StandardOpenOption.TRUNCATE_EXISTING : StandardOpenOption.CREATE_NEW;
+      BufferedWriter bufferedWriter =
+          Files.newBufferedWriter(path, StandardCharsets.UTF_8, openOption);
+      sequenceWriter = objectWriter.writeValues(bufferedWriter);
     }
 
     sequenceWriter.write(record);
