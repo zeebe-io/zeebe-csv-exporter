@@ -69,6 +69,32 @@ process,true,1551051793301,40,ServiceTask_0kt6c5i,220,4295092920,1551051793341,2
 process,true,1551051793248,96,ServiceTask_0kt6c5i,210,4295097112,1551051793344,211,0,4295076312,task,1,207,1
 ```
 
+## Analyse
+
+The CSV files can be imported into a spreadsheet, a SQL database or used as
+input to your favorite command line tool to be further analysed.
+
+See the [`scripts/average-duration.awk`] example how to process the CSV with
+[AWK] to calculate the count, total and average duration per workflow instance
+element or job.
+
+```
+awk -f scripts/average-duration.awk samples/workflow-instance-0.csv
+```
+
+Or use a tool like [`textql`] to run SQL queries on-the-fly.
+
+```
+textql -header -pretty -sql 'select elementId, count(duration), sum(duration), avg(duration) from "workflow-instance-0" group by elementId' samples/workflow-instance-0.csv
+```
+
+Get the number of created elements per second grouped by element id
+
+```
+textql -header -pretty -sql 'SELECT elementId, datetime(created/1000, "unixepoch") as timestamp, count() from "workflow-instance-0" GROUP BY elementId, timestamp ORDER BY timestamp' samples/workflow-instance-0.csv
+```
+
+
 ## Code of Conduct
 
 This project adheres to the Contributor Covenant [Code of
@@ -83,3 +109,6 @@ this code. Please report unacceptable behavior to code-of-conduct@zeebe.io.
 [exporter]: https://docs.zeebe.io/basics/exporters.html
 [CSV]: https://en.wikipedia.org/wiki/Comma-separated_values
 [latest release]: https://github.com/zeebe-io/zeebe-csv-exporter/releases
+[AWK]: https://www.gnu.org/software/gawk/manual/gawk.html
+[`scripts/average-duration.awk`]: scripts/average-duration.awk
+[`textql`]: https://github.com/dinedal/textql
