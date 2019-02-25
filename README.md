@@ -94,6 +94,11 @@ Get the number of created elements per second grouped by element id
 textql -header -pretty -sql 'SELECT elementId, datetime(created/1000, "unixepoch") as timestamp, count() from "workflow-instance-0" GROUP BY elementId, timestamp ORDER BY timestamp' samples/workflow-instance-0.csv
 ```
 
+The average number of completed elements per second grouped by element id
+
+```
+textql -header -pretty -sql 'select elementId, avg(c) FROM (SELECT elementId, datetime(ended/1000, "unixepoch") as timestamp, count() as c GROUP BY elementId, timestamp) group by elementId' samples/workflow-instance-0.csv
+```
 
 ## Code of Conduct
 
