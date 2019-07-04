@@ -15,7 +15,7 @@
  */
 package io.zeebe.exporter;
 
-import io.zeebe.protocol.clientapi.ValueType;
+import io.zeebe.protocol.record.ValueType;
 
 public class RecordMissingException extends RuntimeException {
 

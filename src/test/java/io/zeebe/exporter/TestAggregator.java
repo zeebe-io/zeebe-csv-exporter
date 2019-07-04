@@ -20,12 +20,12 @@ import io.zeebe.exporter.aggregator.JobAggregator;
 import io.zeebe.exporter.aggregator.WorkflowInstanceAggregator;
 import io.zeebe.exporter.record.CsvRecord;
 import io.zeebe.exporter.record.JobCsvRecord;
-import io.zeebe.exporter.record.Record;
-import io.zeebe.exporter.record.RecordValue;
 import io.zeebe.exporter.record.WorkflowInstanceCsvRecord;
-import io.zeebe.exporter.record.value.JobRecordValue;
-import io.zeebe.exporter.record.value.WorkflowInstanceRecordValue;
 import io.zeebe.exporter.writer.CsvWriter;
+import io.zeebe.protocol.record.Record;
+import io.zeebe.protocol.record.RecordValue;
+import io.zeebe.protocol.record.value.JobRecordValue;
+import io.zeebe.protocol.record.value.WorkflowInstanceRecordValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class TestAggregator<
   }
 
   public void process(Record<R> record) {
-    int partition = record.getMetadata().getPartitionId();
+    int partition = record.getPartitionId();
     A aggregator = this.aggregator.computeIfAbsent(partition, this::createAggregator);
     aggregator.process(record);
   }

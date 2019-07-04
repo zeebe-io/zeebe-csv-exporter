@@ -45,7 +45,7 @@
     <version.junit>4.12</version.junit>
     <version.log4j>2.11.1</version.log4j>
     <version.slf4j>1.7.25</version.slf4j>
-    <version.zeebe>0.15.0</version.zeebe>
+    <version.zeebe>0.19.0</version.zeebe>
 
     <!-- maven plugin versions -->
     <plugin.version.failsafe>3.0.0-M3</plugin.version.failsafe>
@@ -58,7 +58,7 @@
   <dependencies>
     <dependency>
       <groupId>io.zeebe</groupId>
-      <artifactId>zb-exporter-api</artifactId>
+      <artifactId>zeebe-exporter-api</artifactId>
       <version>${version.zeebe}</version>
       <scope>provided</scope>
     </dependency>
