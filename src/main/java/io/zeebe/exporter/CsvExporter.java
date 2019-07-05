@@ -17,24 +17,30 @@ package io.zeebe.exporter;
 
 import io.zeebe.exporter.aggregator.JobAggregator;
 import io.zeebe.exporter.aggregator.WorkflowInstanceAggregator;
-import io.zeebe.exporter.context.Context;
-import io.zeebe.exporter.context.Controller;
+import io.zeebe.exporter.api.Exporter;
+import io.zeebe.exporter.api.context.Context;
+import io.zeebe.exporter.api.context.Controller;
 import io.zeebe.exporter.record.JobCsvRecord;
-import io.zeebe.exporter.record.Record;
 import io.zeebe.exporter.record.WorkflowInstanceCsvRecord;
-import io.zeebe.exporter.spi.Exporter;
 import io.zeebe.exporter.writer.CsvFileWriter;
-import io.zeebe.protocol.clientapi.ValueType;
+import io.zeebe.protocol.record.Record;
+import io.zeebe.protocol.record.RecordType;
+import io.zeebe.protocol.record.ValueType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import org.slf4j.Logger;
 
 public class CsvExporter implements Exporter {
 
   public static final String WORKFLOW_INSTANCE_PREFIX = "workflow-instance";
   public static final String JOB_PREFIX = "job";
+
+  private static final List<ValueType> EXPORT_VALUE_TYPE =
+      Arrays.asList(ValueType.JOB, ValueType.WORKFLOW_INSTANCE);
 
   private Logger log;
   private Path output;
@@ -52,6 +58,19 @@ public class CsvExporter implements Exporter {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+
+    context.setFilter(
+        new Context.RecordFilter() {
+          @Override
+          public boolean acceptType(RecordType recordType) {
+            return true;
+          }
+
+          @Override
+          public boolean acceptValue(ValueType valueType) {
+            return EXPORT_VALUE_TYPE.contains(valueType);
+          }
+        });
   }
 
   @Override
@@ -64,7 +83,7 @@ public class CsvExporter implements Exporter {
 
   @Override
   public void export(final Record record) {
-    final ValueType valueType = record.getMetadata().getValueType();
+    final ValueType valueType = record.getValueType();
     switch (valueType) {
       case WORKFLOW_INSTANCE:
         workflowInstanceCsvWriter.process(record);

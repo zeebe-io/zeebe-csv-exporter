@@ -16,10 +16,9 @@
 package io.zeebe.exporter.aggregator;
 
 import io.zeebe.exporter.record.JobCsvRecord;
-import io.zeebe.exporter.record.value.JobRecordValue;
-import io.zeebe.exporter.record.value.job.Headers;
 import io.zeebe.exporter.writer.CsvWriter;
-import io.zeebe.protocol.intent.JobIntent;
+import io.zeebe.protocol.record.intent.JobIntent;
+import io.zeebe.protocol.record.value.JobRecordValue;
 
 public class JobAggregator extends Aggregator<JobCsvRecord, JobRecordValue> {
 
@@ -29,14 +28,13 @@ public class JobAggregator extends Aggregator<JobCsvRecord, JobRecordValue> {
 
   @Override
   JobCsvRecord create(JobRecordValue recordValue) {
-    Headers headers = recordValue.getHeaders();
     return new JobCsvRecord()
-        .setWorkflowKey(headers.getWorkflowKey())
-        .setBpmnProcessId(headers.getBpmnProcessId())
-        .setWorkflowDefinitionVersion(headers.getWorkflowDefinitionVersion())
-        .setElementId(headers.getElementId())
-        .setWorkflowInstanceKey(headers.getWorkflowInstanceKey())
-        .setElementInstanceKey(headers.getElementInstanceKey())
+        .setWorkflowKey(recordValue.getWorkflowKey())
+        .setBpmnProcessId(recordValue.getBpmnProcessId())
+        .setWorkflowDefinitionVersion(recordValue.getWorkflowDefinitionVersion())
+        .setElementId(recordValue.getElementId())
+        .setWorkflowInstanceKey(recordValue.getWorkflowInstanceKey())
+        .setElementInstanceKey(recordValue.getElementInstanceKey())
         .setType(recordValue.getType());
   }
 }

@@ -24,12 +24,12 @@ import io.zeebe.exporter.TestAggregator.JobTestAggregator;
 import io.zeebe.exporter.TestAggregator.WorkflowInstanceTestAggregator;
 import io.zeebe.exporter.record.CsvRecord;
 import io.zeebe.exporter.record.JobCsvRecord;
-import io.zeebe.exporter.record.Record;
 import io.zeebe.exporter.record.WorkflowInstanceCsvRecord;
-import io.zeebe.exporter.record.value.JobRecordValue;
-import io.zeebe.exporter.record.value.WorkflowInstanceRecordValue;
 import io.zeebe.exporter.writer.CsvFileWriter;
-import io.zeebe.protocol.clientapi.ValueType;
+import io.zeebe.protocol.record.Record;
+import io.zeebe.protocol.record.ValueType;
+import io.zeebe.protocol.record.value.JobRecordValue;
+import io.zeebe.protocol.record.value.WorkflowInstanceRecordValue;
 import io.zeebe.test.exporter.ExporterIntegrationRule;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -77,9 +77,9 @@ public class CsvExporterIT {
 
     integrationRule.visitExportedRecords(
         record -> {
-          if (ValueType.WORKFLOW_INSTANCE == record.getMetadata().getValueType()) {
+          if (ValueType.WORKFLOW_INSTANCE == record.getValueType()) {
             workflowInstanceAggregator.process((Record<WorkflowInstanceRecordValue>) record);
-          } else if (ValueType.JOB == record.getMetadata().getValueType()) {
+          } else if (ValueType.JOB == record.getValueType()) {
             jobAggregator.process((Record<JobRecordValue>) record);
           }
         });

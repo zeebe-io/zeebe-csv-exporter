@@ -16,9 +16,9 @@
 package io.zeebe.exporter.aggregator;
 
 import io.zeebe.exporter.record.WorkflowInstanceCsvRecord;
-import io.zeebe.exporter.record.value.WorkflowInstanceRecordValue;
 import io.zeebe.exporter.writer.CsvWriter;
-import io.zeebe.protocol.intent.WorkflowInstanceIntent;
+import io.zeebe.protocol.record.intent.WorkflowInstanceIntent;
+import io.zeebe.protocol.record.value.WorkflowInstanceRecordValue;
 
 public class WorkflowInstanceAggregator
     extends Aggregator<WorkflowInstanceCsvRecord, WorkflowInstanceRecordValue> {

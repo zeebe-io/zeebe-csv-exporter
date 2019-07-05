@@ -15,7 +15,7 @@
  */
 package io.zeebe.exporter.record;
 
-import io.zeebe.protocol.BpmnElementType;
+import io.zeebe.protocol.record.value.BpmnElementType;
 import java.util.Objects;
 
 public class WorkflowInstanceCsvRecord extends CsvRecord {

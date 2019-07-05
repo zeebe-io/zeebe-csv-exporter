@@ -17,10 +17,10 @@ package io.zeebe.exporter.aggregator;
 
 import io.zeebe.exporter.RecordMissingException;
 import io.zeebe.exporter.record.CsvRecord;
-import io.zeebe.exporter.record.Record;
-import io.zeebe.exporter.record.RecordValue;
 import io.zeebe.exporter.writer.CsvWriter;
-import io.zeebe.protocol.intent.Intent;
+import io.zeebe.protocol.record.Record;
+import io.zeebe.protocol.record.RecordValue;
+import io.zeebe.protocol.record.intent.Intent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +46,7 @@ public abstract class Aggregator<T extends CsvRecord, R extends RecordValue>
   }
 
   public void process(final Record<R> record) {
-    final Intent intent = record.getMetadata().getIntent();
+    final Intent intent = record.getIntent();
     if (createIntent == intent) {
       cache(record);
     } else if (completeIntent == intent) {
@@ -67,7 +67,7 @@ public abstract class Aggregator<T extends CsvRecord, R extends RecordValue>
         .setKey(key)
         .setStartPosition(record.getPosition())
         .setCreated(record.getTimestamp())
-        .setPartition(record.getProducerId());
+        .setPartition(record.getPartitionId());
 
     records.put(key, csvRecord);
   }
@@ -78,7 +78,7 @@ public abstract class Aggregator<T extends CsvRecord, R extends RecordValue>
     final T csvRecord = records.remove(key);
 
     if (csvRecord == null) {
-      throw new RecordMissingException(record.getMetadata().getValueType(), key);
+      throw new RecordMissingException(record.getValueType(), key);
     }
 
     csvRecord.setEndPosition(record.getPosition());
