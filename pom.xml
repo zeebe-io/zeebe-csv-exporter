@@ -43,7 +43,7 @@
     <version.assertj>3.11.1</version.assertj>
     <version.jackson>2.9.8</version.jackson>
     <version.junit>4.12</version.junit>
-    <version.log4j>2.11.1</version.log4j>
+    <version.log4j>2.13.3</version.log4j>
     <version.slf4j>1.7.25</version.slf4j>
     <version.zeebe>0.20.0</version.zeebe>
 
