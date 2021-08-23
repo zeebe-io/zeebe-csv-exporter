@@ -263,8 +263,8 @@
 
   <scm>
     <url>https://github.com/zeebe-io/zeebe-csv-exporter</url>
-    <connection>scm:git:git@github.com:zeebe-io/zeebe-csv-exporter.git</connection>
-    <developerConnection>scm:git:git@github.com:zeebe-io/zeebe-csv-exporter.git
+    <connection>scm:git:https://${GITHUB_TOKEN_USR}:${GITHUB_TOKEN_PSW}@github.com/zeebe-io/zeebe-csv-exporter.git</connection>
+    <developerConnection>scm:git:https://${GITHUB_TOKEN_USR}:${GITHUB_TOKEN_PSW}@github.com/zeebe-io/zeebe-csv-exporter.git
     </developerConnection>
     <tag>HEAD</tag>
   </scm>
